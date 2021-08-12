@@ -22,6 +22,14 @@ const shortenerModel = mongoose.model("Shortener", shortenerSchema);
 
 // Create function repository
 const saveShortener = (originalURL, middleware) => {
+    // validate URL
+    const validURL = /^((http|https):\/\/)(www.)?[a-zA-Z0-9@:%._\/\-+~#?&//=]{2,256}$/g;
+
+    if (!validURL.test(originalURL)) {
+        middleware(null, { error: 'invalid url' });
+        return;
+    };
+
     // Create UUID
     const UUID = util.getRandomInt(0, 1000);
 
